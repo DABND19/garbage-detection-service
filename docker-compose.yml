@@ -15,10 +15,30 @@ services:
       - frontend
       - backend
 
+  postgres:
+    image: postgres:alpine
+    container_name: tracker_postgres
+    environment:
+      - POSTGRES_DB=$DB_NAME
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
   backend:
     build: ./backend
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+    env_file:
+      - .env
     command: uvicorn app:get_app --port 8000 --host 0.0.0.0
     restart: always
+    links:
+      - postgres
 
   frontend:
     build: ./frontend
@@ -26,4 +46,5 @@ services:
       - frontend-build:/src/build
 
 volumes:
+  pgdata:
   frontend-build:
