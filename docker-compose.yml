@@ -1,0 +1,29 @@
+version: "3"
+services:
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx:/etc/nginx/templates
+      - frontend-build:/usr/share/nginx/html
+      # - ./nginx/cert.pem:/cert.pem:ro
+      # - ./nginx/cert.key:/cert.key:ro
+    # env_file:
+    #   - .env
+    ports:
+      - 3000:3000
+    links:
+      - frontend
+      - backend
+
+  backend:
+    build: ./backend
+    command: uvicorn app:get_app --port 8000 --host 0.0.0.0
+    restart: always
+
+  frontend:
+    build: ./frontend
+    volumes:
+      - frontend-build:/src/build
+
+volumes:
+  frontend-build:
