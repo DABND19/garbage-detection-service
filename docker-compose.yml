@@ -49,6 +49,8 @@ services:
     build: ./frontend
     volumes:
       - frontend-build:/src/build
+    depends_on:
+      - backend
 
 volumes:
   pgdata:
