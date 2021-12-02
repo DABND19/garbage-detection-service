@@ -1,6 +1,13 @@
+from typing import Callable
+
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 
-engine = create_async_engine('sqlite+aiosqlite:///./database.sqlite')
+import settings
 
-Session = sessionmaker(bind=engine, class_=AsyncSession)
+
+engine = create_async_engine(settings.Database.get_url())
+
+Session: Callable[[], AsyncSession] = sessionmaker(bind=engine, 
+                                                   class_=AsyncSession, 
+                                                   expire_on_commit=False)

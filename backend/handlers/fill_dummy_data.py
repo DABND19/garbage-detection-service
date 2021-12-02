@@ -11,8 +11,8 @@ async def fill_with_dummy_data():
     async with Session() as db_session:
         for i in range(10):
             camera = Camera(
-                camera_id=i,
-                let=55.7360991 + float(randint(-1000, 1000)) / 10000,
+                id=i,
+                lat=55.7360991 + float(randint(-1000, 1000)) / 10000,
                 alt=37.6125179 + float(randint(-1000, 1000)) / 10000)
             db_session.add(camera)
             await db_session.commit()

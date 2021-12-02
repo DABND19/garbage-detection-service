@@ -12,5 +12,5 @@ async def on_startup(*_):
 
 def get_app():
     app = FastAPI(on_startup=[on_startup])
-    app.include_router(router)
+    app.include_router(router, prefix='/api')
     return app

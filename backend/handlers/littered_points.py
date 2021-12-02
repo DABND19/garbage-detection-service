@@ -1,13 +1,17 @@
+from datetime import datetime
 from typing import Tuple
 
+<<<<<<< HEAD
 import sqlalchemy
 
 from datetime import datetime
 from db import Session, Selector, Insertor
+=======
+from db import Session, Selector
+>>>>>>> main
 from db.models import Camera
-from sqlalchemy import insert
+
 from .router import router
-from models import SingleCameraInfo
 
 
 def serialize_point(point: Tuple[Camera, int, datetime]):
@@ -15,7 +19,11 @@ def serialize_point(point: Tuple[Camera, int, datetime]):
     return {'cameraId': camera.id,
             'garbageIndex': garbage_index,
             'time': time_,
+<<<<<<< HEAD
             'location': [camera.lat, camera.alt]}
+=======
+            'location': [camera.coordinate_x, camera.coordinate_y]}
+>>>>>>> main
 
 
 @router.get('/littered-points')
@@ -25,18 +33,3 @@ async def handler():
         points = await selector.select_littered_points()
 
     return {'data': list(map(serialize_point, points))}
-
-
-
-
-@router.post('/add_garbage_info')
-async def add_garbage_info(info: SingleCameraInfo):
-    async with Session() as db_session:
-        insertor = Insertor(db_session)
-        result = await insertor.update_garbage_info(info)
-
-@router.post('/fill_with_dummy_data')
-async def fill_with_dummy_data():
-    async with Session() as db_session:
-        insertor = Insertor(db_session)
-        result = await insertor.fill_with_dummy_data()
