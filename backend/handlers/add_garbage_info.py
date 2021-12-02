@@ -18,4 +18,4 @@ async def handler(info: SingleCameraInfo):
         obj = GarbageLog(camera_id=info.cameraId, 
                          garbage_index=info.garbageIndex)
         db_session.add(obj)
-        await session.commit()
+        await db_session.commit()
