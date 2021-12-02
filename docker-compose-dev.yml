@@ -1,10 +1,9 @@
 version: "3"
 services:
-  nginx:
+  dev-nginx:
     image: nginx:alpine
     volumes:
-      - ./nginx:/etc/nginx/templates
-      - frontend-build:/usr/share/nginx/html
+      - ./nginx/dev:/etc/nginx/templates
     environment:
       - NGINX_HOST=localhost
       - NGINX_PORT=80
@@ -16,7 +15,7 @@ services:
       - frontend
       - backend
 
-  postgres:
+  dev-postgres:
     image: postgres:alpine
     container_name: tracker_postgres
     environment:
@@ -26,26 +25,32 @@ services:
     env_file:
       - .env
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata-dev:/var/lib/postgresql/data
     restart: always
 
-  backend:
-    build: ./backend
+  dev-backend:
+    build: 
+      context: ./backend
+      dockerfile: ./Dockerfile-dev
+    volumes: 
+      - ./backend:/src
     environment:
       - DB_HOST=postgres
       - DB_PORT=5432
     env_file:
       - .env
-    command: uvicorn --factory app:get_app --port 8000 --host 0.0.0.0
+    command: uvicorn --factory app:get_app --port 8000 --host 0.0.0.0 --reload
     restart: always
     links:
       - postgres
 
-  frontend:
-    build: ./frontend
-    volumes:
-      - frontend-build:/src/build
+  dev-frontend:
+    build: 
+      context: ./frontend
+      dockerfile: ./Dockerfile-dev
+    volumes: 
+      - ./frontend:/src
+    command: npm start
 
 volumes:
-  pgdata:
-  frontend-build:
+  pgdata-dev:
