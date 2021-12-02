@@ -6,7 +6,6 @@ services:
       - ./nginx:/etc/nginx/templates
       - frontend-build:/usr/share/nginx/html
     environment:
-      - NGINX_HOST=localhost
       - NGINX_PORT=80
     env_file:
       - .env
@@ -15,7 +14,10 @@ services:
     links:
       - frontend
       - backend
-
+    depends_on:
+      - backend
+      - frontend
+      
   postgres:
     image: postgres:alpine
     container_name: tracker_postgres
@@ -41,6 +43,8 @@ services:
       - ./backend:/src
     restart: always
     links:
+      - postgres
+    depends_on:
       - postgres
 
   frontend:
