@@ -1,6 +1,6 @@
 version: "3"
 services:
-  dev-nginx:
+  nginx:
     image: nginx:alpine
     volumes:
       - ./nginx/dev:/etc/nginx/templates
@@ -12,10 +12,13 @@ services:
     ports:
       - 3000:80
     links:
-      - dev-frontend
-      - dev-backend
+      - frontend
+      - backend
+    depends_on:
+      - frontend
+      - backend
 
-  dev-postgres:
+  postgres:
     image: postgres:alpine
     container_name: tracker_postgres
     environment:
@@ -28,7 +31,7 @@ services:
       - pgdata-dev:/var/lib/postgresql/data
     restart: always
 
-  dev-backend:
+  backend:
     build: 
       context: ./backend
       dockerfile: ./Dockerfile-dev
@@ -39,18 +42,22 @@ services:
       - DB_PORT=5432
     env_file:
       - .env
-    command: uvicorn --factory app:get_app --port 8000 --host 0.0.0.0 --reload
+    command: uvicorn --factory app:get_app --port 8000 --host 0.0.0.0
     restart: always
     links:
-      - dev-postgres
+      - postgres
+    depends_on:
+      - postgres
 
-  dev-frontend:
+  frontend:
     build: 
       context: ./frontend
       dockerfile: ./Dockerfile-dev
     volumes: 
       - ./frontend:/src
     command: npm start
+    depends_on:
+      - backend
 
 volumes:
   pgdata-dev:
