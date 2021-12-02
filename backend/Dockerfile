@@ -1,7 +1,5 @@
 FROM python:3
 
-COPY . /src
-
 WORKDIR /src
 
 ENV VIRTUAL_ENV=/venv

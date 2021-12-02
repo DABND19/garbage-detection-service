@@ -5,12 +5,13 @@ services:
     volumes:
       - ./nginx:/etc/nginx/templates
       - frontend-build:/usr/share/nginx/html
-      # - ./nginx/cert.pem:/cert.pem:ro
-      # - ./nginx/cert.key:/cert.key:ro
-    # env_file:
-    #   - .env
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80
+    env_file:
+      - .env
     ports:
-      - 3000:3000
+      - 3000:80
     links:
       - frontend
       - backend
@@ -36,6 +37,8 @@ services:
     env_file:
       - .env
     command: uvicorn app:get_app --port 8000 --host 0.0.0.0
+    volumes: 
+      - ./backend:/src
     restart: always
     links:
       - postgres
