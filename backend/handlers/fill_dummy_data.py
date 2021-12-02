@@ -10,8 +10,8 @@ from .router import router
 async def fill_with_dummy_data():
     async with Session() as db_session:
         for i in range(10):
-            camera = Camera(coordinate_x=55.7360991 + float(i) / 10,
-                            coordinate_y=37.6125179 + float(i) / 10)
+            camera = Camera(coordinate_x=55.7360991 + float(randint(-10, 10)) / 10,
+                            coordinate_y=37.6125179 + float(randint(-10, 10)) / 10)
             db_session.add(camera)
             await db_session.commit()
 
