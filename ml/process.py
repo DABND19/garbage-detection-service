@@ -45,3 +45,12 @@ def process_video(camera_id, video_path, model, frames=30, save_every=600):
                 "camera_id": camera_id,
                 "garbage_index": num_bags,
             })
+
+
+def main_pipeline(model_path, image_path):
+    model = PlascticBagDetector(model_path)
+    img = cv2.imread(image_path)
+    res = model.predict(img)
+    if res != 0:
+        return 0
+    return len(num_bags)
