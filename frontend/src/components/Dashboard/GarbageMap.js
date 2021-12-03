@@ -15,6 +15,7 @@ const GarbageMap = () => {
         }}
         width="100%"
         height="100%"
+        modules={["templateLayoutFactory", "layout.ImageWithContent"]}
       >
         <ObjectManager
           options={{
@@ -24,18 +25,26 @@ const GarbageMap = () => {
           objects={{
             openBalloonOnClick: true,
           }}
-          clusters={{}}
-          features={data
-            ?.filter((point) => point.garbageIndex != 0)
-            .map((point) => ({
-              type: "Feature",
-              id: point.cameraId,
-              geometry: { type: "Point", coordinates: point.location },
-              properties: {
-                hintContent: `Индекс загрязненности: ${point.garbageIndex}`,
-                // balloonContentBody: "<img src='https://greenstroyspb.ru/ckfinder/userfiles/images/trash(1).jpg' width='300px'></img>",
-              },
-            }))}
+          clusters={{
+          }}
+          features={data?.map((point) => ({
+            type: "Feature",
+            id: point.cameraId,
+            geometry: { type: "Point", coordinates: point.location },
+            properties: {
+              hintContent: `Индекс загрязненности: ${point.garbageIndex}`,
+            //   iconContent: "<img src='https://greenstroyspb.ru/ckfinder/userfiles/images/trash(1).jpg' width='50px'>fsdfdsfsadfadfad</img>",
+              // balloonContentBody: "<img src='https://greenstroyspb.ru/ckfinder/userfiles/images/trash(1).jpg' width='300px'></img>",
+            },
+            options: {
+              iconLayout: 'default#image',
+              iconImageHref: 'https://cdn.iconscout.com/icon/premium/png-256-thumb/garbage-2546478-2131221.png',
+              // Размеры метки.
+              iconImageSize: [60, 60],
+              // Смещение левого верхнего угла иконки относительно
+              // её "ножки" (точки привязки).
+            }
+          }))}
           modules={[
             "objectManager.addon.objectsBalloon",
             "objectManager.addon.objectsHint",
