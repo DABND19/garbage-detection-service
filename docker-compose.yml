@@ -10,7 +10,7 @@ services:
     env_file:
       - .env
     ports:
-      - 80:80
+      - 3000:80
     links:
       - frontend
       - backend
@@ -52,6 +52,16 @@ services:
     depends_on:
       - backend
 
+  grafana:
+    build:
+      context: ./grafana
+    container_name: grafana
+    ports:
+      - 9000:3000
+    volumes:
+      - grafana-data:/var/lib/grafana
+
 volumes:
   pgdata:
   frontend-build:
+  grafana-data:
