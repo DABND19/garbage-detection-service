@@ -3,7 +3,7 @@ server {
   server_name        ${NGINX_HOST};
 
   location /photos {
-    root /usr/share/nginx/html;
+    root             /usr/share/nginx/html;
   }
 
   location /api {

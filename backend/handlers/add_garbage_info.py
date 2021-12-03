@@ -1,11 +1,11 @@
 from base64 import b64decode
 import os
-from time import time
 from typing import Literal
 
 from pydantic import BaseModel
+from starlette.responses import JSONResponse
 
-from db import Session
+from db import Session, Selector
 from db.models import GarbageLog
 
 from .router import router
@@ -17,13 +17,13 @@ class Photo(BaseModel):
 
 
 class SingleCameraInfo(BaseModel):
-    cameraId: int
-    garbageIndex: int
+    totalContainers: int
+    filledContainers: int
     photo: Photo
 
 
 def save_photo(info: SingleCameraInfo) -> str:
-    file_name = f'{info.cameraId}_{int(time())}.{info.photo.extension}'
+    file_name = f'camera_{info.cameraId}.{info.photo.extension}'
     file_path = os.path.join('photos/', file_name)
 
     raw_data = b64decode(info.photo.data)
@@ -33,13 +33,24 @@ def save_photo(info: SingleCameraInfo) -> str:
     return file_path
 
 
-@router.post('/add-garbage-info')
-async def handler(info: SingleCameraInfo):
+@router.post('/{camera_id}')
+async def handler(info: SingleCameraInfo, camera_id: int):
     async with Session() as db_session:
-        obj = GarbageLog(camera_id=info.cameraId, 
-                         garbage_index=info.garbageIndex, 
-                         photo_path=save_photo(info))
-        db_session.add(obj)
+        selector = Selector(db_session)
+
+        camera = await selector.select_camera_with_id(camera_id)
+        if not camera:
+            error = {'message': f'Camera with id: {camera_id} not found.'}
+            return JSONResponse(status_code=404, content={'error': error})
+
+        camera.photo_path = save_photo(info)
+        db_session.add(camera)
+
+        garbage_log = GarbageLog(camera_id=camera.id, 
+                                 total_containers_count=info.totalContainers, 
+                                 filled_containers_count=info.filledContainers)
+        db_session.add(garbage_log)
+
         await db_session.commit()
-    
-    return {}
+
+    return {'photo': camera.photo_path, 'id': garbage_log.id}

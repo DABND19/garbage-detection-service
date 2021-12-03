@@ -27,14 +27,14 @@ const GarbageMap = () => {
           }}
           clusters={{
           }}
-          features={data?.map((point) => ({
+          features={data?.map((camera) => ({
             type: "Feature",
-            id: point.cameraId,
-            geometry: { type: "Point", coordinates: point.location },
+            id: camera.id,
+            geometry: { type: "Point", coordinates: camera.location },
             properties: {
-              hintContent: `Индекс загрязненности: ${point.garbageIndex}`,
+              hintContent: `Заполненные баки: ${camera.filledContainers}`,
             //   iconContent: "<img src='https://greenstroyspb.ru/ckfinder/userfiles/images/trash(1).jpg' width='50px'>fsdfdsfsadfadfad</img>",
-              balloonContentBody: point.photo && `<img src='/${point.photo}' width='400px'></img>`,
+              balloonContentBody: camera.photo && `<img src='${camera.photo}' width='400px'></img>`,
             },
             options: {
               iconLayout: 'default#image',
