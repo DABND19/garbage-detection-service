@@ -42,6 +42,7 @@ def save_photo(photo: Photo, camera: Camera) -> str:
 
 @router.post('/{camera_id}')
 async def handler(info: SingleCameraInfo, camera_id: int):
+    print("Hello")
     async with Session() as db_session:
         selector = Selector(db_session)
 
