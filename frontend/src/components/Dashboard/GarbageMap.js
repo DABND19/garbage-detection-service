@@ -4,7 +4,9 @@ import { useQuery } from "react-query";
 import { fetchLitteredPoints } from "../../api";
 
 const GarbageMap = () => {
-  const { data } = useQuery("littered-points", fetchLitteredPoints);
+  const { data } = useQuery("littered-points", fetchLitteredPoints, {
+    refetchInterval: 15000
+  });
 
   return (
     <YMaps>
