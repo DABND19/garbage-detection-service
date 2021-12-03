@@ -13,7 +13,7 @@ class CameraPayload(BaseModel):
     alt: float
 
 
-@router.post('/')
+@router.post('/cameras')
 async def handler(payload: CameraPayload):
     async with Session() as db_session:
         camera = Camera(id=payload.id, address=payload.address, 

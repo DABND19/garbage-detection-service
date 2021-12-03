@@ -15,9 +15,11 @@ services:
     links:
       - frontend
       - backend
+      - grafana
     depends_on:
       - backend
       - frontend
+      - grafana
       
   postgres:
     build: ./postgres
@@ -56,11 +58,7 @@ services:
       - backend
 
   grafana:
-    build:
-      context: ./grafana
-    container_name: grafana
-    ports:
-      - 9000:3000
+    build: ./grafana
     volumes:
       - grafana-data:/var/lib/grafana
 

@@ -4,7 +4,9 @@ import { useQuery } from "react-query";
 import { fetchLitteredPoints } from "../../api";
 
 const GarbageMap = () => {
-  const { data } = useQuery("littered-points", fetchLitteredPoints);
+  const { data } = useQuery("littered-points", fetchLitteredPoints, {
+    refetchInterval: 15000
+  });
 
   return (
     <YMaps>
@@ -33,7 +35,7 @@ const GarbageMap = () => {
             geometry: { type: "Point", coordinates: camera.location },
             properties: {
               hintContent: `Заполненные баки: ${camera.filledContainers}`,
-              balloonContentBody: camera.photo && `<img src='${camera.photo}' width='400px'></img>`,
+              balloonContentBody: camera?.photo && `<img src='${camera.photo}' width='400px'></img>`,
             },
             options: {
               preset: 'islands#circleDotIcon',
