@@ -54,10 +54,11 @@ async def handler(info: SingleCameraInfo, camera_id: int):
         camera.updated_at = datetime.now()
         db_session.add(camera)
 
+        garbage_containers_data = list(map(lambda item: item.dict(), info.containers))
         garbage_log = GarbageLog(camera_id=camera.id, 
                                  total_containers_count=info.totalContainers, 
                                  filled_containers_count=info.filledContainers, 
-                                 garbage_containers_data=info.containers)
+                                 garbage_containers_data=garbage_containers_data)
         db_session.add(garbage_log)
 
         await db_session.commit()
