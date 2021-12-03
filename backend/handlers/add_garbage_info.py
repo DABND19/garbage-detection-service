@@ -1,4 +1,5 @@
 from base64 import b64decode
+from datetime import datetime
 import os
 from typing import Literal
 
@@ -44,6 +45,7 @@ async def handler(info: SingleCameraInfo, camera_id: int):
             return JSONResponse(status_code=404, content={'error': error})
 
         camera.photo_path = save_photo(info.photo, camera)
+        camera.updated_at = datetime.now()
         db_session.add(camera)
 
         garbage_log = GarbageLog(camera_id=camera.id, 
