@@ -18,7 +18,7 @@ def serialize_camera(point: Tuple[Camera, int, int]):
             'filledContainers': filled_containers}
 
 
-@router.get('/')
+@router.get('/cameras')
 async def handler():
     async with Session() as db_session:
         selector = Selector(db_session)
