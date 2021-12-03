@@ -1,7 +1,7 @@
 from base64 import b64decode
 from datetime import datetime
 import os
-from typing import Literal
+from typing import List, Literal
 
 from pydantic import BaseModel
 from starlette.responses import JSONResponse
@@ -17,10 +17,16 @@ class Photo(BaseModel):
     data: str
 
 
+class GarbageContainer(BaseModel):
+    insideGarbage: int
+    nearbyGarbage: int
+
+
 class SingleCameraInfo(BaseModel):
     totalContainers: int
     filledContainers: int
     photo: Photo
+    containers: List[GarbageContainer]
 
 
 def save_photo(photo: Photo, camera: Camera) -> str:
@@ -50,7 +56,8 @@ async def handler(info: SingleCameraInfo, camera_id: int):
 
         garbage_log = GarbageLog(camera_id=camera.id, 
                                  total_containers_count=info.totalContainers, 
-                                 filled_containers_count=info.filledContainers)
+                                 filled_containers_count=info.filledContainers, 
+                                 garbage_containers_data=info.containers)
         db_session.add(garbage_log)
 
         await db_session.commit()

@@ -33,16 +33,11 @@ const GarbageMap = () => {
             geometry: { type: "Point", coordinates: camera.location },
             properties: {
               hintContent: `Заполненные баки: ${camera.filledContainers}`,
-            //   iconContent: "<img src='https://greenstroyspb.ru/ckfinder/userfiles/images/trash(1).jpg' width='50px'>fsdfdsfsadfadfad</img>",
               balloonContentBody: camera.photo && `<img src='${camera.photo}' width='400px'></img>`,
             },
             options: {
-              iconLayout: 'default#image',
-              iconImageHref: 'https://cdn.iconscout.com/icon/premium/png-256-thumb/garbage-2546478-2131221.png',
-              // Размеры метки.
-              iconImageSize: [60, 60],
-              // Смещение левого верхнего угла иконки относительно
-              // её "ножки" (точки привязки).
+              preset: 'islands#circleDotIcon',
+              iconColor: camera.filledContainers > 0 ? 'red' : 'green'
             }
           }))}
           modules={[
