@@ -12,7 +12,11 @@ async def fill_with_dummy_data():
         for camera_id in range(1000, 1010):
             lat = 55.786778667350575 + float(randint(-1000, 1000)) / 10000
             alt = 49.12538845509848 + float(randint(-1000, 1000)) / 10000
-            camera = Camera(id=camera_id, lat=lat, alt=alt, address='Казань')
+            camera = Camera(
+                id=camera_id, 
+                lat=lat, alt=alt, 
+                address='Казань',
+                photo_path='photos/Garbage.jpg')
             db_session.add(camera)
             await db_session.commit()
 
