@@ -9,7 +9,7 @@ from .router import router
 
 def serialize_camera(point: Tuple[Camera, int, int]):
     camera, total_containers, filled_containers = point
-    photo = urljoin('/', camera.photo_path) if camera.photo_path else None
+    photo = urljoin('/cameras', camera.photo_path) if camera.photo_path else None
     return {'id': camera.id,
             'address': camera.address, 
             'photo': photo,

@@ -33,7 +33,7 @@ const GarbageMap = () => {
             geometry: { type: "Point", coordinates: camera.location },
             properties: {
               hintContent: `Заполненные баки: ${camera.filledContainers}`,
-              balloonContentBody: camera.photo && `<img src='${camera.photo}' width='400px'></img>`,
+              balloonContentBody: camera?.photo && `<img src='${camera.photo}' width='400px'></img>`,
             },
             options: {
               preset: 'islands#circleDotIcon',

@@ -15,9 +15,11 @@ services:
     links:
       - frontend
       - backend
+      - grafana
     depends_on:
       - backend
       - frontend
+      - grafana
       
   postgres:
     image: postgres:alpine
