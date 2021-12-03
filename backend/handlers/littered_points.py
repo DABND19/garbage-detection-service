@@ -7,11 +7,10 @@ from db.models import Camera
 from .router import router
 
 
-def serialize_point(point: Tuple[Camera, int, datetime]):
-    camera, garbage_index, time_ = point
+def serialize_point(point: Tuple[Camera, int]):
+    camera, garbage_index = point
     return {'cameraId': camera.id,
             'garbageIndex': garbage_index,
-            'time': time_,
             'location': [camera.lat, camera.alt]}
 
 
