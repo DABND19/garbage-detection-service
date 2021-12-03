@@ -27,8 +27,6 @@ class Selector:
         ).join(
             GarbageLog, 
             isouter=True
-        ).where(
-            GarbageLog.garbage_index > 1
         )
         result = await self.session.execute(statement)
         return result.all()
