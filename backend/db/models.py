@@ -5,6 +5,7 @@ from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import DateTime, Float, String
 from sqlalchemy.types import Integer
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.dialects.postgresql import JSONB
 
 
 Base = declarative_base()
@@ -34,3 +35,5 @@ class GarbageLog(Base):
     camera_id = Column(Integer, ForeignKey(Camera.id), nullable=False)
     total_containers_count = Column(Integer, nullable=False, default=0)
     filled_containers_count = Column(Integer, nullable=False, default=0)
+
+    garbage_containers_data = Column(JSONB, nullable=False, default=lambda: [])
