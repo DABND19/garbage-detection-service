@@ -1,3 +1,3 @@
 FROM postgres
 
-ADD CustomInit.sql /docker-entrypoint-initdb.d/
+# ADD CustomInit.sql /docker-entrypoint-initdb.d/
