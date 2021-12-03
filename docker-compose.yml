@@ -68,10 +68,7 @@ volumes:
   pgdata:
 
   frontend-build:
-<<<<<<< HEAD
 
   photos:
     
-=======
   grafana-data:
->>>>>>> grafana

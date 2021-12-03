@@ -32,15 +32,9 @@ const GarbageMap = () => {
             id: camera.id,
             geometry: { type: "Point", coordinates: camera.location },
             properties: {
-<<<<<<< HEAD
               hintContent: `Заполненные баки: ${camera.filledContainers}`,
             //   iconContent: "<img src='https://greenstroyspb.ru/ckfinder/userfiles/images/trash(1).jpg' width='50px'>fsdfdsfsadfadfad</img>",
               balloonContentBody: camera.photo && `<img src='${camera.photo}' width='400px'></img>`,
-=======
-              hintContent: `Индекс загрязненности: ${point.garbageIndex}`,
-            //   iconContent: "<img src='https://greenstroyspb.ru/ckfinder/userfiles/images/trash(1).jpg' width='50px'>fsdfdsfsadfadfad</img>",
-              // balloonContentBody: "<img src='https://greenstroyspb.ru/ckfinder/userfiles/images/trash(1).jpg' width='300px'></img>",
->>>>>>> grafana
             },
             options: {
               iconLayout: 'default#image',

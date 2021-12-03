@@ -3,13 +3,8 @@ services:
   nginx:
     image: nginx:alpine
     volumes:
-<<<<<<< HEAD
       - ./nginx/dev:/etc/nginx/templates/
       - photos-dev:/usr/share/nginx/html/photos/
-=======
-      - ./nginx/dev:/etc/nginx/templates
-      - photos-dev:/usr/share/nginx/photos
->>>>>>> grafana
     environment:
       - NGINX_HOST=localhost
       - NGINX_PORT=3000
