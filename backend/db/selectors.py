@@ -18,15 +18,10 @@ class Selector:
                 order_by=GarbageLog.created_at, 
                 partition_by=GarbageLog.camera_id,
                 range_=(None, None)
-            ).label('current_garbage_index'), 
-            func.last_value(GarbageLog.created_at).over(
-                order_by=GarbageLog.created_at, 
-                partition_by=GarbageLog.camera_id,
-                range_=(None, None)
-            ).label('time')
+            ).label('current_garbage_index')
         ).join(
             GarbageLog, 
             isouter=True
-        )
+        ).distinct()
         result = await self.session.execute(statement)
         return result.all()
