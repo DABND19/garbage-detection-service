@@ -1,35 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import { Map, YMaps, ObjectManager } from "react-yandex-maps";
-import { useQuery } from 'react-query';
-import { fetchLitteredPoints } from '../../api';
-
-const featuresExample = [
-  {
-    type: "Feature",
-    id: 0,
-    geometry: { type: "Point", coordinates: [55.831903, 37.411961] },
-    properties: {
-      balloonContentHeader:
-        "<font size=3><b><a target='_blank' href='https://yandex.ru'>Здесь может быть ваша ссылка</a></b></font>",
-      balloonContentBody:
-        "<p>Ваше имя: <input name='login'></p><p><em>Телефон в формате 2xxx-xxx:</em>  <input></p><p><input type='submit' value='Отправить'></p>",
-      balloonContentFooter:
-        "<font size=1>Информация предоставлена: </font> <strong>этим балуном</strong>",
-      clusterCaption: "<strong><s>Еще</s> одна</strong> метка",
-      hintContent: "<strong>Текст  <s>подсказки</s></strong>",
-    },
-  },
-]
+import { useQuery } from "react-query";
+import { fetchLitteredPoints } from "../../api";
 
 const GarbageMap = () => {
-  const { data } = useQuery('littered-points', fetchLitteredPoints)
+  const { data } = useQuery("littered-points", fetchLitteredPoints);
 
   return (
     <YMaps>
       <Map
-        defaultState={{ center: [55.75, 37.57], zoom: 9 }}
+        defaultState={{
+          center: [55.786778667350575, 49.12538845509848],
+          zoom: 12,
+        }}
         width="100%"
         height="100%"
+        modules={["templateLayoutFactory", "layout.ImageWithContent"]}
       >
         <ObjectManager
           options={{
@@ -46,15 +32,18 @@ const GarbageMap = () => {
             id: point.cameraId,
             geometry: { type: "Point", coordinates: point.location },
             properties: {
-              balloonContentHeader:
-                "<font size=3><b><a target='_blank' href='https://yandex.ru'>Здесь может быть ваша ссылка</a></b></font>",
-              balloonContentBody:
-                "<p>Ваше имя: <input name='login'></p><p><em>Телефон в формате 2xxx-xxx:</em>  <input></p><p><input type='submit' value='Отправить'></p>",
-              balloonContentFooter:
-                "<font size=1>Информация предоставлена: </font> <strong>этим балуном</strong>",
-              clusterCaption: "<strong><s>Еще</s> одна</strong> метка",
-              hintContent: "<strong>Текст  <s>подсказки</s></strong>",
+              hintContent: `Индекс загрязненности: ${point.garbageIndex}`,
+            //   iconContent: "<img src='https://greenstroyspb.ru/ckfinder/userfiles/images/trash(1).jpg' width='50px'>fsdfdsfsadfadfad</img>",
+              balloonContentBody: point.photo && `<img src='/${point.photo}' width='400px'></img>`,
             },
+            options: {
+              iconLayout: 'default#image',
+              iconImageHref: 'https://cdn.iconscout.com/icon/premium/png-256-thumb/garbage-2546478-2131221.png',
+              // Размеры метки.
+              iconImageSize: [60, 60],
+              // Смещение левого верхнего угла иконки относительно
+              // её "ножки" (точки привязки).
+            }
           }))}
           modules={[
             "objectManager.addon.objectsBalloon",

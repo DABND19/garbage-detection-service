@@ -19,16 +19,14 @@ class Selector:
                 partition_by=GarbageLog.camera_id,
                 range_=(None, None)
             ).label('current_garbage_index'), 
-            func.last_value(GarbageLog.created_at).over(
+            func.last_value(GarbageLog.photo_path).over(
                 order_by=GarbageLog.created_at, 
                 partition_by=GarbageLog.camera_id,
                 range_=(None, None)
-            ).label('time')
+            )
         ).join(
             GarbageLog, 
             isouter=True
-        ).where(
-            GarbageLog.garbage_index > 1
-        )
+        ).distinct()
         result = await self.session.execute(statement)
         return result.all()
