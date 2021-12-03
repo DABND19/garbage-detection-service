@@ -20,7 +20,7 @@ services:
       - frontend
       
   postgres:
-    image: postgres:alpine
+    build: ./postgres
     container_name: tracker_postgres
     environment:
       - POSTGRES_DB=$DB_NAME
