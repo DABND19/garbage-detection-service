@@ -51,6 +51,6 @@ def main_pipeline(model_path, image_path):
     model = PlascticBagDetector(model_path)
     img = cv2.imread(image_path)
     res = model.predict(img)
-    if res != 0:
+    if res == 0:
         return 0
-    return len(num_bags)
+    return len(res)
