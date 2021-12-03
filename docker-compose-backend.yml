@@ -1,0 +1,47 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_DB=$DB_NAME
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  backend:
+    build: ./backend
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+    env_file:
+      - .env
+    command: uvicorn --factory app:get_app --port 8000 --host 0.0.0.0
+    restart: always
+    ports:
+      - 8000:8000
+    volumes: 
+      - photos:/src/photos
+    links:
+      - postgres
+    depends_on:
+      - postgres
+
+  grafana:
+    build: ./grafana
+    ports:
+      - 9000:3000
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+volumes:
+  pgdata:
+
+  frontend-build:
+
+  photos:
+    
+  grafana-data:
