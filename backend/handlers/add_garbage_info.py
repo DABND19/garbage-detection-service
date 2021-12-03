@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from starlette.responses import JSONResponse
 
 from db import Session, Selector
-from db.models import GarbageLog
+from db.models import Camera, GarbageLog
 
 from .router import router
 
@@ -22,11 +22,11 @@ class SingleCameraInfo(BaseModel):
     photo: Photo
 
 
-def save_photo(info: SingleCameraInfo) -> str:
-    file_name = f'camera_{info.cameraId}.{info.photo.extension}'
+def save_photo(photo: Photo, camera: Camera) -> str:
+    file_name = f'camera_{camera.id}.{photo.extension}'
     file_path = os.path.join('photos/', file_name)
 
-    raw_data = b64decode(info.photo.data)
+    raw_data = b64decode(photo.data)
     with open(file_path, 'wb') as f:
         f.write(raw_data)
 
@@ -43,7 +43,7 @@ async def handler(info: SingleCameraInfo, camera_id: int):
             error = {'message': f'Camera with id: {camera_id} not found.'}
             return JSONResponse(status_code=404, content={'error': error})
 
-        camera.photo_path = save_photo(info)
+        camera.photo_path = save_photo(info.photo, camera)
         db_session.add(camera)
 
         garbage_log = GarbageLog(camera_id=camera.id, 
