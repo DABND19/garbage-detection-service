@@ -1,10 +1,18 @@
 from base64 import b64decode
+<<<<<<< HEAD
 from datetime import datetime
 import os
 from typing import Literal
 
 from pydantic import BaseModel
 from starlette.responses import JSONResponse
+=======
+import os
+from time import time
+from typing import Literal
+
+from pydantic import BaseModel
+>>>>>>> grafana
 
 from db import Session, Selector
 from db.models import Camera, GarbageLog
@@ -12,6 +20,7 @@ from db.models import Camera, GarbageLog
 from .router import router
 
 
+<<<<<<< HEAD
 class Photo(BaseModel):
     extension: Literal['jpeg', 'png', 'jpg']
     data: str
@@ -30,6 +39,28 @@ def save_photo(photo: Photo, camera: Camera) -> str:
     raw_data = b64decode(photo.data)
     with open(file_path, 'wb') as f:
         f.write(raw_data)
+=======
+# class Photo(BaseModel):
+#     extension: Literal['jpeg', 'png', 'jpg']
+#     data: str
+
+
+class SingleCameraInfo(BaseModel):
+    cameraId: int
+    garbageIndex: int
+    # photo: Photo
+
+
+def save_photo(info: SingleCameraInfo) -> str:
+    file_name = f'{info.cameraId}_{int(time())}.{info.photo.extension}'
+    file_path = os.path.join('photos/', file_name)
+
+    raw_data = b64decode(info.photo.data)
+    with open(file_path, 'wb') as f:
+        f.write(raw_data)
+
+    return file_path
+>>>>>>> grafana
 
     return file_path
 
@@ -54,5 +85,10 @@ async def handler(info: SingleCameraInfo, camera_id: int):
         db_session.add(garbage_log)
 
         await db_session.commit()
+<<<<<<< HEAD
 
     return {'photo': camera.photo_path, 'id': garbage_log.id}
+=======
+    
+    return {}
+>>>>>>> grafana

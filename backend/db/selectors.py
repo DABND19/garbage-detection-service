@@ -18,12 +18,16 @@ class Selector:
                 order_by=GarbageLog.created_at, 
                 partition_by=GarbageLog.camera_id,
                 range_=(None, None)
+<<<<<<< HEAD
             ), 
             func.last_value(GarbageLog.filled_containers_count).over(
                 order_by=GarbageLog.created_at, 
                 partition_by=GarbageLog.camera_id,
                 range_=(None, None)
             )
+=======
+            ).label('current_garbage_index')
+>>>>>>> grafana
         ).join(
             GarbageLog, 
             isouter=True
