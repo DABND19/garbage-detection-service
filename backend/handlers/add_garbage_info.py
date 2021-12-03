@@ -11,15 +11,15 @@ from db.models import GarbageLog
 from .router import router
 
 
-class Photo(BaseModel):
-    extension: Literal['jpeg', 'png', 'jpg']
-    data: str
+# class Photo(BaseModel):
+#     extension: Literal['jpeg', 'png', 'jpg']
+#     data: str
 
 
 class SingleCameraInfo(BaseModel):
     cameraId: int
     garbageIndex: int
-    photo: Photo
+    # photo: Photo
 
 
 def save_photo(info: SingleCameraInfo) -> str:
@@ -37,9 +37,8 @@ def save_photo(info: SingleCameraInfo) -> str:
 async def handler(info: SingleCameraInfo):
     async with Session() as db_session:
         obj = GarbageLog(camera_id=info.cameraId, 
-                         garbage_index=info.garbageIndex, 
-                         photo_path=save_photo(info))
+                         garbage_index=info.garbageIndex)
         db_session.add(obj)
         await db_session.commit()
     
-    return {'photo': obj.photo_path}
+    return {}

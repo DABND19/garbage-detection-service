@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Map, YMaps, ObjectManager } from "react-yandex-maps";
 import { useQuery } from 'react-query';
 import { fetchLitteredPoints } from '../../api';
@@ -28,8 +28,8 @@ const GarbageMap = () => {
             id: point.cameraId,
             geometry: { type: "Point", coordinates: point.location },
             properties: {
-              hintContent: "Индекс загрязненности: 7",
-              balloonContentBody: "<img src='https://greenstroyspb.ru/ckfinder/userfiles/images/trash(1).jpg' width='300px'></img>",
+              hintContent: `Индекс загрязненности: ${point.garbageIndex}`,
+              // balloonContentBody: "<img src='https://greenstroyspb.ru/ckfinder/userfiles/images/trash(1).jpg' width='300px'></img>",
             },
           }))}
           modules={[
