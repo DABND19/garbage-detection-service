@@ -14,5 +14,5 @@ async def handler():
                  'address': camera.address, 
                  'location': [camera.lat, camera.alt], 
                  'fullness': fullness * 100, 
-                 'nearbyGarbage': reduce(lambda x: x[0] + x[1]['nearbyGarbage'], containers, 0)} 
+                 'nearbyGarbage': reduce(lambda x, y: x + y['nearbyGarbage'], containers, 0)} 
                 for camera, fullness, filled_containers, containers in top5]

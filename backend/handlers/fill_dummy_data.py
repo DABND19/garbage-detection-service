@@ -8,6 +8,7 @@ from db.models import Camera, GarbageLog
 from .router import router
 import pandas as pd
 
+
 @router.post('/fill-dummy-data')
 async def fill_with_dummy_data():
     df = pd.read_csv('handlers/cameras-data.csv').dropna()
@@ -16,8 +17,8 @@ async def fill_with_dummy_data():
             if None in row:
                 continue
             camera = Camera(
-                id= i + 1, 
-                lat=row['Latitude'], alt=row['Longitude'], 
+                id=i + 1,
+                lat=row['Latitude'], alt=row['Longitude'],
                 address=row['District'])
             db_session.add(camera)
         await db_session.commit()
@@ -26,17 +27,17 @@ async def fill_with_dummy_data():
             time = datetime(2021, 11, 25)
             total_containers = randint(4, 10)
             for _ in range(6 * 24 * 10):
-                filled_containers = randint(total_containers - 2, total_containers)
+                filled_containers = randint(
+                    total_containers - 2, total_containers)
                 garbage_log = GarbageLog(
-                    camera_id=i + 1, 
-                    total_containers_count=total_containers, 
+                    camera_id=i + 1,
+                    total_containers_count=total_containers,
                     filled_containers_count=filled_containers,
                     created_at=time,
                     updated_at=time,
-                    garbage_containers_data={
-                        "containers": list([{"insideGarbage": randint(0, 3), "nearbyGarbage": randint(0, 4)} for _ in range(total_containers)])
-                    }
-                    )
+                    garbage_containers_data=[{"insideGarbage": randint(
+                        0, 3), "nearbyGarbage": randint(0, 4)} for _ in range(total_containers)]
+                )
                 time += timedelta(minutes=10)
                 db_session.add(garbage_log)
             await db_session.commit()
