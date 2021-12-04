@@ -12,6 +12,18 @@ const Container = styled.div`
   height: 100%;
 `;
 
+const Link = styled.a`
+  width: 100%;
+  text-overflow: ellipsis;
+  color: #1890ff;
+  text-decoration: none;
+
+  :visited {
+    color: #1890ff;
+    text-decoration: none;
+  }
+`;
+
 const Stats = () => {
   const { data } = useQuery('top5', fetchTop5, {
     refetchInterval: 15000, 
@@ -35,15 +47,14 @@ const Stats = () => {
             dataIndex: 'address',
             key: 'address',
             render: (address, { location }) => (
-              <Button 
-                type="link" 
+              <Link
                 onClick={() => {
                   store.map.changeCenter(location)
                   store.map.changeZoom(18)
                 }}
               >
                 {address}
-              </Button>
+              </Link>
             )
           },
           {
