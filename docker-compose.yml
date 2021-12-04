@@ -6,6 +6,7 @@ services:
       - ./nginx:/etc/nginx/templates
       - frontend-build:/usr/share/nginx/html
       - photos:/usr/share/nginx/html/photos
+      - ./hitmap:/usr/share/nginx/html/hitmap
     environment:
       - NGINX_PORT=3000
     env_file:

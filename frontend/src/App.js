@@ -41,7 +41,7 @@ const App = () => {
         title='Garbage detector'
         extra={[
           <Button href='/grafana'>Grafana</Button>,
-          <Button href='/'>Тепловая карта</Button>
+          <Button href='/hitmap'>Тепловая карта</Button>
         ]}
       />
       <Content>

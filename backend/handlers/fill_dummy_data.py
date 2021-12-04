@@ -19,7 +19,7 @@ async def fill_with_dummy_data():
             camera = Camera(
                 id=i + 1,
                 lat=row['Latitude'], alt=row['Longitude'],
-                address=row['District'])
+                address=row['Адрес установки камеры'])
             db_session.add(camera)
         await db_session.commit()
 
